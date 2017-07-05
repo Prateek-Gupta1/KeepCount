@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@drawable/primary_gradient</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#448AFF</color>
+    <color name="colorbackground">#FAFAFA</color>
+
+    <color name="health">#4DB6AC</color>
+    <color name="work">#EF5350</color>
+    <color name="home">#795548</color>
+    <color name="misc">#FF4081</color>
+    <color name="personal">#2196F3</color>
+
+    <color name="grey">#7f0d0015</color>
+    <color name="rippleColor">#50ff9966</color>
+
+</resources>

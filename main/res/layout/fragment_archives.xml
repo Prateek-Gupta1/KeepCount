@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spArdMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:elevation="4dp"
+            android:layout_margin="5dp"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/dropdown_background"/>
+
+        <Spinner
+            android:id="@+id/spArdYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:elevation="4dp"
+            android:layout_margin="5dp"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/dropdown_background"/>
+
+        <Spinner
+            android:id="@+id/spEventCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_margin="5dp"
+            android:elevation="4dp"
+            android:spinnerMode="dropdown"
+            android:background="@drawable/dropdown_background"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvArchives"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/archives_empty_list_text"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="normal"
+        android:textAppearance="@android:style/TextAppearance.Large"/>
+
+</LinearLayout>

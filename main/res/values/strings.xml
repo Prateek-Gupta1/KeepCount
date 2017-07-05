@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Keep Count</string>
+    <string name="title_activity_main">Keep Count</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tvEventValue">Value</string>
+    <string name="tvEventUnit">Unit</string>
+    <string name="tvEventCategory">Category</string>
+    <string name="tvEventGain">Gain</string>
+    <string name="tvEventLoss">Lost</string>
+    <string name="tvEventNone">None</string>
+
+    <string name="master_event_delete_alert_title">Delete Event</string>
+    <string name="master_event_delete_alert_yes">Yes</string>
+    <string name="master_event_delete_alert_no">No</string>
+
+    <string name="delete_event">Delete</string>
+    <string name="event_history">Quick History</string>
+    <string name="event_reminder">Set Reminder</string>
+    <string name="event_reminder_update">Update Reminder</string>
+    <string name="delete_reminder">Delete Reminder</string>
+    <string name="dialog_add_title">Mark On Timeline</string>
+    <string name="dialog_tvunits">Units</string>
+    <string name="dialog_tvdom">Day of the Month</string>
+    <string name="archives_empty_list_text">No results found.</string>
+    <string name="dialog_new_event_note">Would you Gain or Lose the above mentioned units everytime you mark this event?</string>
+</resources>

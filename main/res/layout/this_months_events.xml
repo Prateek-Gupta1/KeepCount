@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/listitem_background"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/circle_blue"
+            android:id="@+id/llEventIconBG"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="7dp"
+                android:id="@+id/ivEventIcon"
+                android:src="@drawable/ic_favorite_white_24dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Test Title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/cardview_dark_background"
+            />
+
+        <ImageView
+            android:id="@+id/ivRemoveEvent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_delete_black_24dp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Description:"
+            android:textSize="10sp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+             />
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignLeft="@+id/textView6"
+            android:layout_alignStart="@+id/textView6"
+            android:layout_below="@+id/textView6"
+            android:text="This is a test content"
+            android:textColor="#80000000"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_toLeftOf="@+id/ivEditEvent"
+            android:layout_toStartOf="@+id/ivEditEvent" />
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvDesc"
+            android:text="Small Text"
+            android:textColor="@color/misc"
+            android:textSize="12sp"/>
+
+        <ImageView
+            android:id="@+id/ivEditEvent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/tvValue"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_create_black_24dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

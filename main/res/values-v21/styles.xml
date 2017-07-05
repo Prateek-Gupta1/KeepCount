@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">#00397F</item>
+        <item name="android:colorAccent">#0AAEEF</item>
+    </style>
+
+    <style name="KeepCountTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+    </style>
+
+</resources>
