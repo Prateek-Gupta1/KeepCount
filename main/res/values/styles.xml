@@ -10,12 +10,46 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
         <!--<item name="buttonStyle">@style/RobotoButtonStyle</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
         <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>
         <item name="alertDialogTheme">@style/AlertDialogCustom</item>-->
     </style>
+
+    <style name="AquaSplashTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryAquaSplash</item>
+        <item name="backgroundColor">@color/colorPrimaryAquaSplash</item>
+    </style>
+
+    <style name="TurboscentTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryTurboscent</item>
+        <item name="backgroundColor">@color/colorPrimaryTurboscent</item>
+    </style>
+
+    <style name="SunnyTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimarySunny</item>
+        <item name="backgroundColor">@color/colorPrimarySunny</item>
+    </style>
+    <style name="RipeTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryRipe</item>
+        <item name="backgroundColor">@color/colorPrimaryRipe</item>
+    </style>
+    <style name="PaloAltoTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryRichMetal</item>
+        <item name="backgroundColor">@color/colorPrimaryRichMetal</item>
+    </style>
+    <style name="MorpheusTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryMorpheus</item>
+        <item name="backgroundColor">@color/colorPrimaryMorpheus</item>
+    </style>
+
+    <style name="DarkTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
+        <item name="backgroundColor">@color/colorPrimaryDarkTheme</item>
+    </style>
+
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
@@ -34,20 +68,23 @@
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/health</item>
     </style>
+
+
+
+
     <!--<style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
+    <item name="android:fontFamily">sans-serif-medium</item>
+</style>
 
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
+<style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+    <item name="android:fontFamily">sans-serif-medium</item>
+</style>
 
-    <style name="AlertDialogCustom" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorPrimary">#00397F</item>
-        <item name="colorAccent">#0AAEEF</item>
-    </style>
+<style name="AlertDialogCustom" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <item name="colorPrimary">#00397F</item>
+    <item name="colorAccent">#0AAEEF</item>
+</style>
 -->
-
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
         <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->

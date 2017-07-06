@@ -17,4 +17,12 @@
     <color name="grey">#7f0d0015</color>
     <color name="rippleColor">#50ff9966</color>
 
+    <color name="colorPrimaryAquaSplash">@drawable/gradient_aquasplash</color>
+    <color name="colorPrimaryTurboscent">@drawable/gradient_turboscent</color>
+    <color name="colorPrimaryMorpheus">@drawable/gradient_morpheus</color>
+    <color name="colorPrimaryRichMetal">@drawable/gradient_paloalto</color>
+    <color name="colorPrimaryRipe">@drawable/gradient_ripe</color>
+    <color name="colorPrimarySunny">@drawable/gradient_sunny</color>
+    <color name="colorPrimaryDarkTheme">@drawable/gradient_dark</color>
+
 </resources>

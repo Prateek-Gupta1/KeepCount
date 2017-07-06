@@ -13,6 +13,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
         <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>

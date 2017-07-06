@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/backgroundColor"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -97,7 +97,7 @@
             android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.21"
+            android:layout_weight="0.2"
             android:gravity="center_vertical"
             android:padding="2dp"
             android:text="@string/dialog_tvdom"
@@ -117,20 +117,17 @@
             android:id="@+id/tvTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
             android:layout_weight="0.20"
             android:gravity="center"
-            android:padding="2dp"
             android:text="Time"
             android:textSize="10sp"
-            android:textStyle="bold" />
+             />
 
         <NumberPicker
             android:id="@+id/npHour"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/numberpicker_background"
-            android:layout_marginLeft="2dp"
             android:layout_weight="0.20"
             android:orientation="horizontal"
             android:scrollIndicators="none" />
@@ -140,8 +137,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/numberpicker_background"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="0.20"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.2"
             android:orientation="horizontal"
             android:scrollIndicators="none" />
 
@@ -168,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/textView"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginRight="2dp"
             android:layout_toLeftOf="@+id/textView"
             android:layout_toStartOf="@+id/textView"

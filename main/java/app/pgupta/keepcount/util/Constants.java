@@ -20,6 +20,18 @@ public class Constants {
     public static final String REMINDER_EXTRAS = "keepcount.reminder.extras";
     public static final int REMINDER_NOTIFICATION_ID = 6473;
 
+    public static final String THEME_DEFAULT = "Default";
+    public static final String THEME_AQUASPLASH = "Aqua Splash";
+    public static final String THEME_PALOALTO = "Palo Alto";
+    public static final String THEME_SUNNY = "Sunny";
+    public static final String THEME_RIPE = "Ripe";
+    public static final String THEME_MORPHEUS = "Morpheus";
+    public static final String THEME_TURBOSCENT = "Turbo Scent";
+    public static final String THEME_DARK = "Dark";
+
+
+
+
     public static String[] MONTHS = new String[]{"Jan","Feb","Mar","April","May","June","July","Aug","Sept","Oct","Nov","Dec"};
     //public static String[] MONTHS_SHORTHAND = new String[]{"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 

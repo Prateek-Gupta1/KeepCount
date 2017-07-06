@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,8 +55,10 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         }
     } ;
 
+    private final int THEME_ACTION = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        init();
+
         mActionBar = getSupportActionBar();
         mActionBar.setTitle("Events and Activities");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -129,6 +132,29 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             editor.putBoolean(Constants.FIRST_TIME_LAUNCH, false);
             editor.commit();
         }
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String themeName = pref.getString("theme", Constants.THEME_DEFAULT);
+        if (themeName.equals(Constants.THEME_DEFAULT)) {
+            setTheme(R.style.KeepCountTheme);
+        } else if (themeName.equals(Constants.THEME_AQUASPLASH)) {
+            setTheme(R.style.AquaSplashTheme);
+        } else if (themeName.equals(Constants.THEME_MORPHEUS)) {
+            setTheme(R.style.MorpheusTheme);
+        }else if (themeName.equals(Constants.THEME_PALOALTO)) {
+            setTheme(R.style.PaloAltoTheme);
+        }else if (themeName.equals(Constants.THEME_RIPE)) {
+            setTheme(R.style.RipeTheme);
+        }else if (themeName.equals(Constants.THEME_SUNNY)) {
+            setTheme(R.style.SunnyTheme);
+        }else if (themeName.equals(Constants.THEME_TURBOSCENT)) {
+            setTheme(R.style.TurboscentTheme);
+        }else if (themeName.equals(Constants.THEME_DARK)) {
+            setTheme(R.style.DarkTheme);
+        }else {
+            setTheme(R.style.KeepCountTheme);
+        }
+
     }
 
 
@@ -151,8 +177,24 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id){
+            case R.id.action_settings:
+                startActivityForResult(new Intent(this, ThemePreferenceActivity.class), THEME_ACTION);
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == THEME_ACTION) {
+            if (resultCode == ThemePreferenceActivity.RESULT_CODE_THEME_CHANGED) {
+                finish();
+                startActivity(getIntent());
+                return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setupViewPager(ViewPager viewPager) {
