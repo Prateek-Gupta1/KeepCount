@@ -5,8 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -47,8 +54,12 @@ public class EventDataSourceHandler {
 
     };
 
+    private final String DB_FILEPATH;
+
     public EventDataSourceHandler(Context context) {
         dbHelper = new DBHelper(context);
+        String packageName = context.getPackageName();
+        DB_FILEPATH = "/data/data/" + packageName + "/databases/"+ EventDBContract.DB_NAME;
     }
 
     public void openConnection() throws SQLException {
@@ -355,6 +366,42 @@ public class EventDataSourceHandler {
                 });
     }
 
+    public void backupDataBase() throws FileNotFoundException {
+        if(isSDCardWriteable()) {
+            FileInputStream fin = new FileInputStream(new File(DB_FILEPATH));
+            File fileOut = new File(Environment.getExternalStorageDirectory()+"/keepcount");
+        }
+    }
+
+    private boolean isSDCardWriteable() {
+        boolean rc = false;
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            rc = true;
+        }
+        return rc;
+    }
+
+    private void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+        FileChannel fromChannel = null;
+        FileChannel toChannel = null;
+        try {
+            fromChannel = fromFile.getChannel();
+            toChannel = toFile.getChannel();
+            fromChannel.transferTo(0, fromChannel.size(), toChannel);
+        } finally {
+            try {
+                if (fromChannel != null) {
+                    fromChannel.close();
+                }
+            } finally {
+                if (toChannel != null) {
+                    toChannel.close();
+                }
+            }
+        }
+    }
+
     private Event cursorToDailyEvent(Cursor cursor) {
         Event event = new Event();
         event.setRecordID(cursor.getInt(cursor.getColumnIndex(EventDBContract.TDE_COLUMN_ID)));
@@ -394,4 +441,5 @@ public class EventDataSourceHandler {
         reminder.setUuid(cursor.getString(cursor.getColumnIndex(EventDBContract.COLUMN_REMINDER_UNIQUE_ID)));
         return reminder;
     }
+
 }

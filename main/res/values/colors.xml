@@ -24,5 +24,6 @@
     <color name="colorPrimaryRipe">@drawable/gradient_ripe</color>
     <color name="colorPrimarySunny">@drawable/gradient_sunny</color>
     <color name="colorPrimaryDarkTheme">@drawable/gradient_dark</color>
+    <color name="colorPrimaryCocktail">@drawable/gradient_cocktail</color>
 
 </resources>

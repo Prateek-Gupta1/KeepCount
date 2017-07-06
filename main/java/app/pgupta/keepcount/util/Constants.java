@@ -28,6 +28,8 @@ public class Constants {
     public static final String THEME_MORPHEUS = "Morpheus";
     public static final String THEME_TURBOSCENT = "Turbo Scent";
     public static final String THEME_DARK = "Dark";
+    public static final String THEME_COCKTAIL = "Cocktail";
+
 
 
 

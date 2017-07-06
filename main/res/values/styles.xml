@@ -49,6 +49,10 @@
         <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
         <item name="backgroundColor">@color/colorPrimaryDarkTheme</item>
     </style>
+    <style name="CocktailTheme" parent="KeepCountTheme">
+        <item name="colorPrimary">@color/colorPrimaryCocktail</item>
+        <item name="backgroundColor">@color/colorPrimaryCocktail</item>
+    </style>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>

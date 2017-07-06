@@ -151,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             setTheme(R.style.TurboscentTheme);
         }else if (themeName.equals(Constants.THEME_DARK)) {
             setTheme(R.style.DarkTheme);
+        }else if (themeName.equals(Constants.THEME_COCKTAIL)) {
+            setTheme(R.style.CocktailTheme);
         }else {
             setTheme(R.style.KeepCountTheme);
         }
