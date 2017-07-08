@@ -1,14 +1,19 @@
 package app.pgupta.keepcount.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,10 +24,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +37,7 @@ import java.util.List;
 
 import app.pgupta.keepcount.R;
 import app.pgupta.keepcount.adapter.AllEventsAdapter;
+import app.pgupta.keepcount.datasource.EventDataSourceHandler;
 import app.pgupta.keepcount.fragment.AllEventsFragment;
 import app.pgupta.keepcount.fragment.ArchivesFragment;
 import app.pgupta.keepcount.fragment.MonthlyTimelineFragment;
@@ -40,6 +48,7 @@ import app.pgupta.keepcount.util.TimeUtil;
 
 public class MainActivity extends AppCompatActivity implements AllEventsAdapter.EventMarkedListener,Serializable {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     transient private Toolbar toolbar;
     transient private TabLayout tabLayout;
     transient private ViewPager pager;
@@ -56,6 +65,14 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
     } ;
 
     private final int THEME_ACTION = 1;
+    private final int REQUEST_EXTERNAL_STORAGE_FOR_BACKUP = 2;
+    private final int REQUEST_EXTERNAL_STORAGE_FOR_RESTORE = 3;
+    private String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         init();
@@ -82,16 +99,15 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
            }
-
            @Override
            public void onPageSelected(int position) {
                String title = null;
                if(position == 0)
                    title = "Events and Activities";
                else if(position == 1)
-                   title = "Month's Timeline";
+                   title = "Current Timeline";
                else
-                   title = "Archives";
+                   title = "Archived Counts";
                final String finalTitle = title;
                new Thread(new Runnable() {
                    @Override
@@ -135,6 +151,11 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", Constants.THEME_DEFAULT);
+        setTheme(themeName);
+
+    }
+
+    private void setTheme(String themeName) {
         if (themeName.equals(Constants.THEME_DEFAULT)) {
             setTheme(R.style.KeepCountTheme);
         } else if (themeName.equals(Constants.THEME_AQUASPLASH)) {
@@ -156,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         }else {
             setTheme(R.style.KeepCountTheme);
         }
-
     }
 
 
@@ -182,6 +202,21 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         switch (id){
             case R.id.action_settings:
                 startActivityForResult(new Intent(this, ThemePreferenceActivity.class), THEME_ACTION);
+                break;
+            case R.id.action_backup:
+                Log.e(TAG,"Action backup");
+                if(verifyStoragePermissions(this)) {
+                    try {
+                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        handler.backupDataBase();
+                        Toast.makeText(getApplicationContext(),"Backup successful",Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        Log.e(TAG,e.getMessage());
+                        Toast.makeText(getApplicationContext(),"Backup unsuccessful. Please try again",Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.action_restore:
         }
 
         return super.onOptionsItemSelected(item);
@@ -261,6 +296,57 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
                 i++;
             }
             return -1;
+        }
+    }
+
+    private boolean verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE_FOR_BACKUP
+            );
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_EXTERNAL_STORAGE_FOR_BACKUP){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                try {
+                    EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                    handler.backupDataBase();
+                    Toast.makeText(getApplicationContext(),"Backup successful",Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    Log.e(TAG,e.getMessage());
+                    Toast.makeText(getApplicationContext(),"Backup unsuccessful. Please try again",Toast.LENGTH_LONG).show();
+                }
+            }else{
+                Toast.makeText(getApplicationContext(),"Cannot access SD card",Toast.LENGTH_SHORT).show();
+            }
+        }else if(requestCode == REQUEST_EXTERNAL_STORAGE_FOR_RESTORE){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                try{
+                    EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                    handler.restoreDataBase();
+                    Toast.makeText(getApplicationContext(),"Restore successful",Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
+
+                }catch (IOException e) {
+                    Log.e(TAG,e.getMessage());
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }else{
+                Toast.makeText(getApplicationContext(),"Cannot access SD card",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

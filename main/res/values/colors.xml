@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@drawable/primary_gradient</color>
+    <color name="colorPrimary">#ff9966</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
@@ -17,13 +17,13 @@
     <color name="grey">#7f0d0015</color>
     <color name="rippleColor">#50ff9966</color>
 
-    <color name="colorPrimaryAquaSplash">@drawable/gradient_aquasplash</color>
-    <color name="colorPrimaryTurboscent">@drawable/gradient_turboscent</color>
-    <color name="colorPrimaryMorpheus">@drawable/gradient_morpheus</color>
-    <color name="colorPrimaryRichMetal">@drawable/gradient_paloalto</color>
-    <color name="colorPrimaryRipe">@drawable/gradient_ripe</color>
-    <color name="colorPrimarySunny">@drawable/gradient_sunny</color>
-    <color name="colorPrimaryDarkTheme">@drawable/gradient_dark</color>
-    <color name="colorPrimaryCocktail">@drawable/gradient_cocktail</color>
+    <color name="colorPrimaryAquaSplash">#4481eb</color>
+    <color name="colorPrimaryTurboscent">#6713d2</color>
+    <color name="colorPrimaryMorpheus">#30cfd0</color>
+    <color name="colorPrimaryRichMetal">#16a085</color>
+    <color name="colorPrimaryRipe">#ff758c</color>
+    <color name="colorPrimarySunny">#f6d365</color>
+    <color name="colorPrimaryDarkTheme">#29323c</color>
+    <color name="colorPrimaryCocktail">#c43a30</color>
 
 </resources>

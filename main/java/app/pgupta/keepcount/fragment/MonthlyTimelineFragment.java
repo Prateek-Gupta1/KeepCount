@@ -4,8 +4,10 @@ package app.pgupta.keepcount.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +63,27 @@ public class MonthlyTimelineFragment extends Fragment {
         mEventData = loadData();
         mAdapter = new MonthlyTimelineAdapter(getContext(),mEventData,getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        GridLayoutManager glm = new GridLayoutManager(this.getContext(),2);
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (mAdapter.getItemViewType(position)){
+                    case MonthlyTimelineAdapter.HEADER:
+                        return 2;
+                    case MonthlyTimelineAdapter.EVENT:
+                        if((position + 1 < mAdapter.getItemCount())
+                                && (mAdapter.getItemViewType(position + 1) == MonthlyTimelineAdapter.EVENT)
+                                || mAdapter.getItemViewType(position - 1) == MonthlyTimelineAdapter.EVENT)
+                            return 1;
+                        else
+                            return 2;
+                    default:
+                        return 2;
+                }
+            }
+        });
+       // mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setLayoutManager(glm);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(500);

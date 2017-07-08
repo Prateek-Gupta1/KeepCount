@@ -33,9 +33,9 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     LinkedList<Object> data;
     Activity activity;
 
-    private final int HEADER = 1;
-    private final int EVENT = 2;
-    private final int EMPTY = 3;
+    public static final int HEADER = 1;
+    public static final int EVENT = 2;
+    public static final int EMPTY = 3;
 
     public MonthlyTimelineAdapter(Context context, LinkedList<Object> data, Activity activity) {
         this.context = context;
@@ -51,7 +51,7 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 HeaderViewHolder header = new HeaderViewHolder(view);
                 return header;
             case EVENT:
-                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.this_months_events, parent, false);
+                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.this_months_event_listitem, parent, false);
                 EventViewHolder event = new EventViewHolder(view2);
                 return event;
             case EMPTY:
@@ -81,7 +81,7 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             EventViewHolder viewHolder = (EventViewHolder) holder;
             viewHolder.ivIcon.setImageResource(event.getEventCategory().icon);
             //viewHolder.llIconBG.setBackgroundColor(context.getResources().getColor(event.getEventCategory().color));
-            viewHolder.llIconBG.setBackgroundResource((event.getEventCategory().background));
+            viewHolder.llIconBG.setBackgroundResource((event.getEventCategory().color));
             viewHolder.tvDesc.setText(event.getDescription());
             viewHolder.tvTitle.setText(event.getTitle());
 

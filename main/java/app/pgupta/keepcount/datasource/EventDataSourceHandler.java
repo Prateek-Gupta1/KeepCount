@@ -55,11 +55,13 @@ public class EventDataSourceHandler {
     };
 
     private final String DB_FILEPATH;
+    private final String DB_BACKUPPATH;
 
     public EventDataSourceHandler(Context context) {
         dbHelper = new DBHelper(context);
         String packageName = context.getPackageName();
-        DB_FILEPATH = "/data/data/" + packageName + "/databases/"+ EventDBContract.DB_NAME;
+        DB_FILEPATH = Environment.getDataDirectory() + "/data/" + packageName + "/databases/"+ EventDBContract.DB_NAME;
+        DB_BACKUPPATH = Environment.getExternalStorageDirectory()+ "/keepcount.bak";
     }
 
     public void openConnection() throws SQLException {
@@ -67,7 +69,7 @@ public class EventDataSourceHandler {
     }
 
     public void closeConnection() {
-        database.close();
+        if(database != null) database.close();
     }
 
     public EventMaster createMasterEvent(EventMaster eventMaster) {
@@ -366,20 +368,33 @@ public class EventDataSourceHandler {
                 });
     }
 
-    public void backupDataBase() throws FileNotFoundException {
-        if(isSDCardWriteable()) {
+    public void backupDataBase() throws IOException {
+        if(isSDCardWritable()) {
             FileInputStream fin = new FileInputStream(new File(DB_FILEPATH));
-            File fileOut = new File(Environment.getExternalStorageDirectory()+"/keepcount");
+            FileOutputStream fOut = new FileOutputStream(new File(DB_BACKUPPATH));
+            Log.e("Backup log", "Backup path = " + DB_BACKUPPATH + " DB path = " + DB_FILEPATH);
+
+            copyFile(fin,fOut);
         }
     }
 
-    private boolean isSDCardWriteable() {
-        boolean rc = false;
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            rc = true;
+    public void restoreDataBase() throws IOException {
+        if(isSDCardWritable()) {
+            FileOutputStream fout = new FileOutputStream(new File(DB_FILEPATH));
+            File fileIn = new File(DB_BACKUPPATH);
+            if(fileIn != null && fileIn.exists()) {
+                FileInputStream fin = new FileInputStream(fileIn);
+                copyFile(fin, fout);
+            }else{
+                throw new IOException("Backup file does not exists");
+            }
         }
-        return rc;
+    }
+
+    private boolean isSDCardWritable() {
+        Log.e("Backup log", "Backup path = " + DB_BACKUPPATH + " DB path = " + DB_FILEPATH);
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ? true : false;
+      //  return Environment.getExternalStorageDirectory().canWrite();
     }
 
     private void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
