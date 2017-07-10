@@ -6,6 +6,7 @@
     android:background="@drawable/listitem_background"
     android:elevation="4dp"
     android:orientation="vertical"
+    android:weightSum="2"
     android:padding="10dp">
 
     <LinearLayout
@@ -15,6 +16,7 @@
         android:orientation="vertical"
         android:id="@+id/llEventIconBG"
         android:padding="5dp"
+        android:layout_weight="1.8"
         android:layout_marginBottom="5dp">
 
     <LinearLayout
@@ -37,7 +39,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="Test Title"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="#ffffff" />
 
     </LinearLayout>
@@ -60,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="This is a test content"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textColor="#ffffff" />
     </LinearLayout>
 
@@ -70,6 +72,7 @@
         android:layout_gravity="center"
         android:orientation="horizontal"
         android:padding="2dp"
+        android:layout_weight="0.2"
         android:weightSum="1">
 
         <TextView

@@ -46,7 +46,7 @@ import app.pgupta.keepcount.util.Constants;
 import app.pgupta.keepcount.util.TimeUtil;
 
 
-public class MainActivity extends AppCompatActivity implements AllEventsAdapter.EventMarkedListener,Serializable {
+public class MainActivity extends AppCompatActivity implements AllEventsAdapter.EventMarkedListener, Serializable {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     transient private Toolbar toolbar;
@@ -54,15 +54,16 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
     transient private ViewPager pager;
     transient private SharedPreferences prefs;
     transient private ActionBar mActionBar;
+    public static int theme_gradient;
 
-    transient private final Handler mHandler = new Handler(){
+    transient private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String aResponse = msg.getData().getString("message");
             mActionBar.setTitle(aResponse);
         }
-    } ;
+    };
 
     private final int THEME_ACTION = 1;
     private final int REQUEST_EXTERNAL_STORAGE_FOR_BACKUP = 2;
@@ -95,37 +96,38 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         pager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-           @Override
-           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-           }
-           @Override
-           public void onPageSelected(int position) {
-               String title = null;
-               if(position == 0)
-                   title = "Events and Activities";
-               else if(position == 1)
-                   title = "Current Timeline";
-               else
-                   title = "Archived Counts";
-               final String finalTitle = title;
-               new Thread(new Runnable() {
-                   @Override
-                   public void run() {
-                       Message msg = mHandler.obtainMessage();
-                       Bundle b = new Bundle();
-                       b.putString("message",finalTitle);
-                       msg.setData(b);
-                       mHandler.sendMessage(msg);
-                   }
-               }).start();
-           }
+            }
 
-           @Override
-           public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageSelected(int position) {
+                String title = null;
+                if (position == 0)
+                    title = "Events and Activities";
+                else if (position == 1)
+                    title = "Current Timeline";
+                else
+                    title = "Archived Counts";
+                final String finalTitle = title;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = mHandler.obtainMessage();
+                        Bundle b = new Bundle();
+                        b.putString("message", finalTitle);
+                        msg.setData(b);
+                        mHandler.sendMessage(msg);
+                    }
+                }).start();
+            }
 
-           }
-       });
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
@@ -134,10 +136,10 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
     private void init() {
         Intent intent = this.getIntent();
-        if(intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) != -1){
+        if (intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) != -1) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.cancel(Constants.REMINDER_NOTIFICATION_ID);
-            Log.e("Notification Event ID", intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) +"");
+            Log.e("Notification Event ID", intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) + "");
         }
         prefs = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -162,19 +164,19 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             setTheme(R.style.AquaSplashTheme);
         } else if (themeName.equals(Constants.THEME_MORPHEUS)) {
             setTheme(R.style.MorpheusTheme);
-        }else if (themeName.equals(Constants.THEME_PALOALTO)) {
+        } else if (themeName.equals(Constants.THEME_PALOALTO)) {
             setTheme(R.style.PaloAltoTheme);
-        }else if (themeName.equals(Constants.THEME_RIPE)) {
+        } else if (themeName.equals(Constants.THEME_RIPE)) {
             setTheme(R.style.RipeTheme);
-        }else if (themeName.equals(Constants.THEME_SUNNY)) {
+        } else if (themeName.equals(Constants.THEME_SUNNY)) {
             setTheme(R.style.SunnyTheme);
-        }else if (themeName.equals(Constants.THEME_TURBOSCENT)) {
+        } else if (themeName.equals(Constants.THEME_TURBOSCENT)) {
             setTheme(R.style.TurboscentTheme);
-        }else if (themeName.equals(Constants.THEME_DARK)) {
+        } else if (themeName.equals(Constants.THEME_DARK)) {
             setTheme(R.style.DarkTheme);
-        }else if (themeName.equals(Constants.THEME_COCKTAIL)) {
+        } else if (themeName.equals(Constants.THEME_COCKTAIL)) {
             setTheme(R.style.CocktailTheme);
-        }else {
+        } else {
             setTheme(R.style.KeepCountTheme);
         }
     }
@@ -199,24 +201,40 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 startActivityForResult(new Intent(this, ThemePreferenceActivity.class), THEME_ACTION);
                 break;
             case R.id.action_backup:
-                Log.e(TAG,"Action backup");
-                if(verifyStoragePermissions(this)) {
+                Log.e(TAG, "Action backup");
+                if (verifyStoragePermissions(this, REQUEST_EXTERNAL_STORAGE_FOR_BACKUP)) {
                     try {
                         EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
                         handler.backupDataBase();
-                        Toast.makeText(getApplicationContext(),"Backup successful",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Backup successful", Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
-                        Log.e(TAG,e.getMessage());
-                        Toast.makeText(getApplicationContext(),"Backup unsuccessful. Please try again",Toast.LENGTH_LONG).show();
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(getApplicationContext(), "Backup unsuccessful. Please try again", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
             case R.id.action_restore:
+                if (verifyStoragePermissions(this, REQUEST_EXTERNAL_STORAGE_FOR_RESTORE)) {
+                    try {
+                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        handler.restoreDataBase();
+                        Toast.makeText(getApplicationContext(), "Restore successful", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.action_tutorial:
+                Intent intent = new Intent(this, TutorialActivity.class);
+                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -244,15 +262,15 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
     @Override
     public void onEventMarked(Event event) {
-        ViewPagerAdapter adapter = (ViewPagerAdapter)pager.getAdapter();
+        ViewPagerAdapter adapter = (ViewPagerAdapter) pager.getAdapter();
         MonthlyTimelineFragment frag = (MonthlyTimelineFragment) adapter.getItem(adapter.getTitlePosition("Timeline"));
         String eveDate = TimeUtil.getFormattedDateDaily(event.getTimestamp());
-        if(frag.mEventData != null && frag.mEventData.size() != 0 && frag.mEventData.get(0) instanceof String && eveDate.equalsIgnoreCase((String)frag.mEventData.get(0))){
-            frag.mEventData.add(1,event);
+        if (frag.mEventData != null && frag.mEventData.size() != 0 && frag.mEventData.get(0) instanceof String && eveDate.equalsIgnoreCase((String) frag.mEventData.get(0))) {
+            frag.mEventData.add(1, event);
             frag.mAdapter.notifyItemInserted(1);
-        }else{
-            frag.mEventData.add(0,eveDate);
-            frag.mEventData.add(1,event);
+        } else {
+            frag.mEventData.add(0, eveDate);
+            frag.mEventData.add(1, event);
             frag.mAdapter.notifyDataSetChanged();
         }
 
@@ -266,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             super(manager);
 
         }
+
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
@@ -287,10 +306,10 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             return null;
         }
 
-        public int getTitlePosition(String title){
-            int i=0;
-            for(String t : mFragmentTitleList){
-                if(t.equalsIgnoreCase(title)){
+        public int getTitlePosition(String title) {
+            int i = 0;
+            for (String t : mFragmentTitleList) {
+                if (t.equalsIgnoreCase(title)) {
                     return i;
                 }
                 i++;
@@ -299,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         }
     }
 
-    private boolean verifyStoragePermissions(Activity activity) {
+    private boolean verifyStoragePermissions(Activity activity, int requestCode) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -308,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE_FOR_BACKUP
+                    requestCode
             );
             return false;
         }
@@ -318,35 +337,34 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_EXTERNAL_STORAGE_FOR_BACKUP){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            if (requestCode == REQUEST_EXTERNAL_STORAGE_FOR_BACKUP) {
                 try {
                     EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
                     handler.backupDataBase();
-                    Toast.makeText(getApplicationContext(),"Backup successful",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Backup successful", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    Log.e(TAG,e.getMessage());
-                    Toast.makeText(getApplicationContext(),"Backup unsuccessful. Please try again",Toast.LENGTH_LONG).show();
+                    Log.e(TAG, e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Backup unsuccessful. Please try again", Toast.LENGTH_LONG).show();
                 }
-            }else{
-                Toast.makeText(getApplicationContext(),"Cannot access SD card",Toast.LENGTH_SHORT).show();
+            } else if (requestCode == REQUEST_EXTERNAL_STORAGE_FOR_RESTORE) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        handler.restoreDataBase();
+                        Toast.makeText(getApplicationContext(), "Restore successful", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
             }
-        }else if(requestCode == REQUEST_EXTERNAL_STORAGE_FOR_RESTORE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                try{
-                    EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
-                    handler.restoreDataBase();
-                    Toast.makeText(getApplicationContext(),"Restore successful",Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(getIntent());
 
-                }catch (IOException e) {
-                    Log.e(TAG,e.getMessage());
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-            }else{
-                Toast.makeText(getApplicationContext(),"Cannot access SD card",Toast.LENGTH_SHORT).show();
-            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot access SD card. Permission denied.", Toast.LENGTH_SHORT).show();
         }
     }
 }

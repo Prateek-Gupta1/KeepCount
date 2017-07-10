@@ -16,6 +16,8 @@ import app.pgupta.keepcount.R;
 public class ThemePreferenceActivity extends PreferenceActivity {
 
     public static final int RESULT_CODE_THEME_CHANGED = 1;
+    public static final String PREF_NOTIFICATION_TONE = "pref_notification";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

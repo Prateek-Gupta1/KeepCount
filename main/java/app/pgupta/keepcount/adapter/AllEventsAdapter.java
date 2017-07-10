@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -429,6 +430,10 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             builder.setPositiveButton(R.string.master_event_delete_alert_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if(reminderTime == null || reminderTime.getTimeInMillis() <= Calendar.getInstance().getTimeInMillis()){
+                        Toast.makeText(context,"Cannot set alarm for time before this moment",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Reminder reminder = new Reminder();
                     reminder.setTimestamp(reminderTime.getTimeInMillis());
                     reminder.setEventID(((EventMaster) masterEventsData.get(position)).getId());
@@ -444,7 +449,6 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                     Intent intent = new Intent(context, ReminderReceiver.class);
                     Bundle bundle = new Bundle();
-                    Log.e("Set reminder", "event id = " + reminder.getEventID());
                     bundle.putInt(Constants.REMINDER_EVENT_ID, reminder.getEventID());
                     bundle.putString(Constants.REMINDER_EVENT_TITLE, ((EventMaster) masterEventsData.get(position)).getTitle());
                     bundle.putInt(Constants.REMINDER_EVENT_ICON, ((EventMaster) masterEventsData.get(position)).getEventCategory().icon);
@@ -457,7 +461,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             builder.setNegativeButton(R.string.master_event_delete_alert_no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    return;
                 }
             });
 

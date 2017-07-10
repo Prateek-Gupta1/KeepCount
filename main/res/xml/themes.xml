@@ -8,4 +8,9 @@
         android:title="@string/theme_dialog_title"
         android:summary="@string/theme_summary"
         android:dialogTitle="@string/theme_dialog_title"/>
+    <CheckBoxPreference
+        android:key="pref_notification"
+        android:title="@string/pref_notification"
+        android:summary="@string/pref_notification_summ"
+        android:defaultValue="true" />
 </PreferenceScreen>
