@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="Net value"
+                android:textStyle="bold"
                 android:textSize="10sp"
                 android:textColor="#80000000" />
 

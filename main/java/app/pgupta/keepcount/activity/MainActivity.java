@@ -2,6 +2,7 @@ package app.pgupta.keepcount.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +45,7 @@ import app.pgupta.keepcount.fragment.ArchivesFragment;
 import app.pgupta.keepcount.fragment.MonthlyTimelineFragment;
 import app.pgupta.keepcount.model.Event;
 import app.pgupta.keepcount.util.Constants;
+import app.pgupta.keepcount.util.ThemeUtil;
 import app.pgupta.keepcount.util.TimeUtil;
 
 
@@ -79,15 +82,16 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        AdView mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mActionBar = getSupportActionBar();
         mActionBar.setTitle("Events and Activities");
+        mActionBar.setBackgroundDrawable(ContextCompat.getDrawable(this,ThemeUtil.theme_background_resource));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
@@ -97,13 +101,11 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         setupViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                String title = null;
+                String title;
                 if (position == 0)
                     title = "Events and Activities";
                 else if (position == 1)
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
+        tabLayout.setBackgroundResource(ThemeUtil.theme_background_resource);
         setTabIcons();
     }
 
@@ -139,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
         if (intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) != -1) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.cancel(Constants.REMINDER_NOTIFICATION_ID);
-            Log.e("Notification Event ID", intent.getIntExtra(Constants.REMINDER_EVENT_ID, -1) + "");
         }
         prefs = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -153,32 +155,8 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", Constants.THEME_DEFAULT);
-        setTheme(themeName);
-
-    }
-
-    private void setTheme(String themeName) {
-        if (themeName.equals(Constants.THEME_DEFAULT)) {
-            setTheme(R.style.KeepCountTheme);
-        } else if (themeName.equals(Constants.THEME_AQUASPLASH)) {
-            setTheme(R.style.AquaSplashTheme);
-        } else if (themeName.equals(Constants.THEME_MORPHEUS)) {
-            setTheme(R.style.MorpheusTheme);
-        } else if (themeName.equals(Constants.THEME_PALOALTO)) {
-            setTheme(R.style.PaloAltoTheme);
-        } else if (themeName.equals(Constants.THEME_RIPE)) {
-            setTheme(R.style.RipeTheme);
-        } else if (themeName.equals(Constants.THEME_SUNNY)) {
-            setTheme(R.style.SunnyTheme);
-        } else if (themeName.equals(Constants.THEME_TURBOSCENT)) {
-            setTheme(R.style.TurboscentTheme);
-        } else if (themeName.equals(Constants.THEME_DARK)) {
-            setTheme(R.style.DarkTheme);
-        } else if (themeName.equals(Constants.THEME_COCKTAIL)) {
-            setTheme(R.style.CocktailTheme);
-        } else {
-            setTheme(R.style.KeepCountTheme);
-        }
+        //setTheme(themeName);
+        ThemeUtil.setTheme(themeName);
     }
 
 
@@ -206,10 +184,9 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
                 startActivityForResult(new Intent(this, ThemePreferenceActivity.class), THEME_ACTION);
                 break;
             case R.id.action_backup:
-                Log.e(TAG, "Action backup");
                 if (verifyStoragePermissions(this, REQUEST_EXTERNAL_STORAGE_FOR_BACKUP)) {
                     try {
-                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(MainActivity.this);
                         handler.backupDataBase();
                         Toast.makeText(getApplicationContext(), "Backup successful", Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
@@ -221,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             case R.id.action_restore:
                 if (verifyStoragePermissions(this, REQUEST_EXTERNAL_STORAGE_FOR_RESTORE)) {
                     try {
-                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(MainActivity.this);
                         handler.restoreDataBase();
                         Toast.makeText(getApplicationContext(), "Restore successful", Toast.LENGTH_SHORT).show();
                         finish();
@@ -233,8 +210,12 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
                 }
                 break;
             case R.id.action_tutorial:
-                Intent intent = new Intent(this, TutorialActivity.class);
-                startActivity(intent);
+                Intent tutIntent = new Intent(this, TutorialActivity.class);
+                startActivity(tutIntent);
+                break;
+            case R.id.action_about:
+                Intent  aboutIntent = new Intent(this, AboutPageActivity.class);
+                startActivity(aboutIntent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -341,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
 
             if (requestCode == REQUEST_EXTERNAL_STORAGE_FOR_BACKUP) {
                 try {
-                    EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                    EventDataSourceHandler handler = EventDataSourceHandler.getInstance(MainActivity.this);
                     handler.backupDataBase();
                     Toast.makeText(getApplicationContext(), "Backup successful", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
@@ -351,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements AllEventsAdapter.
             } else if (requestCode == REQUEST_EXTERNAL_STORAGE_FOR_RESTORE) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     try {
-                        EventDataSourceHandler handler = new EventDataSourceHandler(MainActivity.this);
+                        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(MainActivity.this);
                         handler.restoreDataBase();
                         Toast.makeText(getApplicationContext(), "Restore successful", Toast.LENGTH_SHORT).show();
                         finish();

@@ -23,6 +23,7 @@ import app.pgupta.keepcount.R;
 import app.pgupta.keepcount.datasource.EventDataSourceHandler;
 import app.pgupta.keepcount.model.Event;
 import app.pgupta.keepcount.model.EventMaster;
+import app.pgupta.keepcount.util.ThemeUtil;
 
 /**
  * Created by admin on 5/8/2016.
@@ -73,8 +74,6 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
             viewHolder.tvDate.setText(date);
 
-            Log.e("ListData", String.valueOf(position));
-
         } else {
 
             Event event = (Event) data.get(position);
@@ -96,7 +95,6 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 viewHolder.tvValue.setTextColor(Color.GRAY);
             }
             viewHolder.bindClickListeners(position);
-            Log.e("ListDataView", String.valueOf(position) + " EVENTID: " + String.valueOf(event.getRecordID()));
         }
     }
 
@@ -127,20 +125,16 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void deleteItem(int position) {
-        EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+        EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
         dsHandler.openConnection();
         dsHandler.deleteDailyEvent((Event) data.get(position));
         dsHandler.closeConnection();
-
-        Log.e("Before Condition", String.valueOf(position));
         int nextPos = position + 1;
         int prevPos = position - 1;
 
         if ((nextPos <= data.size() - 1)) {
-            Log.e("Position < DataSize", String.valueOf(position));
             if ((data.get(nextPos) instanceof String) && (data.get(prevPos) instanceof String)) {
                 data.remove(prevPos);
-                Log.e("Position < DataSize", String.valueOf(position));
                 notifyItemRemoved(prevPos);
                 position--;
                 //  notifyItemRangeChanged(prevPos, data.size());
@@ -148,13 +142,11 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else {
             if ((data.get(prevPos) instanceof String)) {
                 data.remove(prevPos);
-                Log.e("Position > DataSize", String.valueOf(position));
                 notifyItemRemoved(prevPos);
                 position--;
                 // notifyItemRangeChanged(prevPos, data.size());
             }
         }
-        Log.e("ThisMonthsEvent", String.valueOf(position));
         data.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, data.size());
@@ -162,7 +154,7 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void updateEvent(Event event, int position) {
-        EventDataSourceHandler handler = new EventDataSourceHandler(context);
+        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(context);
         handler.openConnection();
         handler.updateDailyEvent(event);
         handler.closeConnection();
@@ -239,6 +231,8 @@ public class MonthlyTimelineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     final EditText etDesc = (EditText) dialogView.findViewById(R.id.etEventDesc);
                     final EditText etVal = (EditText) dialogView.findViewById(R.id.etValue);
                     TextView tvUnit = (TextView) dialogView.findViewById(R.id.tvUnit);
+                    LinearLayout llHeader = (LinearLayout)dialogView.findViewById(R.id.llMarkDialogHeader);
+                    llHeader.setBackgroundResource(ThemeUtil.theme_background_resource);
 
 
                     tvHeader.setText("Edit Event");

@@ -8,8 +8,6 @@ import java.util.Calendar;
  */
 public class TimeUtil {
 
-    TimeUtil(){}
-
     public static long getCurrentTimeinMillis(){
         Calendar date = Calendar.getInstance();
         return date.getTimeInMillis();
@@ -41,7 +39,7 @@ public class TimeUtil {
         return formatedDate;
     }
 
-    public static String getMonthString(int mnthNum){
+   /* public static String getMonthString(int mnthNum){
         return Constants.MONTHS[mnthNum-1];
     }
 
@@ -53,5 +51,5 @@ public class TimeUtil {
             }
         }
         return -1;
-    }
+    }*/
 }

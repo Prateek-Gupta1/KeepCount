@@ -166,12 +166,11 @@ public class ArchivesFragment extends Fragment {
 
             Calendar endDate = Calendar.getInstance();
             endDate.set(_year, monthNumber - 1, endDay);
-            EventDataSourceHandler handler = new EventDataSourceHandler(getContext());
+            EventDataSourceHandler handler = EventDataSourceHandler.getInstance(getContext());
             handler.openConnection();
             mArchivedEvents.clear();
             mArchivedEvents.addAll(handler.getArchivedEventsInDateRange(startDate.getTimeInMillis(), endDate.getTimeInMillis(),categoryId));
             handler.closeConnection();
-            Log.e(TAG, " data size " + mArchivedEvents.size());
             if(mArchivedEvents.size() == 0){
                 mRecyclerView.setVisibility(View.GONE);
             }
@@ -192,7 +191,6 @@ public class ArchivesFragment extends Fragment {
             time.setTimeInMillis(Long.valueOf(date));
             int installedMonth = time.get(Calendar.MONTH);
             //installedMonth++;
-            Log.e("Month",""+installedMonth + " currentmonth" + currentMonth);
             if (currentMonth > installedMonth) {
                 months = new ArrayList<String>();
                 while (installedMonth < currentMonth) {

@@ -54,14 +54,23 @@ public class EventDataSourceHandler {
 
     };
 
+    private static EventDataSourceHandler instance = null;
+
     private final String DB_FILEPATH;
     private final String DB_BACKUPPATH;
 
-    public EventDataSourceHandler(Context context) {
+    private EventDataSourceHandler(Context context) {
         dbHelper = new DBHelper(context);
         String packageName = context.getPackageName();
         DB_FILEPATH = Environment.getDataDirectory() + "/data/" + packageName + "/databases/"+ EventDBContract.DB_NAME;
         DB_BACKUPPATH = Environment.getExternalStorageDirectory()+ "/keepcount.bak";
+    }
+
+    public static EventDataSourceHandler getInstance(Context context){
+        if(instance == null){
+            instance = new EventDataSourceHandler(context);
+        }
+        return instance;
     }
 
     public void openConnection() throws SQLException {
@@ -164,8 +173,6 @@ public class EventDataSourceHandler {
                 EventDBContract.COLUMN_EVENT_TIME + " BETWEEN ? AND ? ORDER BY tde." +
                 EventDBContract.COLUMN_EVENT_TIME + " desc;";
 
-        Log.e("EVENT_DATA", query);
-
         String[] selectionArg = new String[]{String.valueOf(startDate), String.valueOf(endDate)};
 
         Cursor cursor = database.rawQuery(query, selectionArg);
@@ -197,8 +204,6 @@ public class EventDataSourceHandler {
                     EventDBContract.TEM_COLUMN_ID + " WHERE tde." +
                     EventDBContract.COLUMN_EVENT_TIME + " BETWEEN ? AND ? "+
                     " ORDER BY tde." + EventDBContract.COLUMN_EVENT_ID + " asc, tde." + EventDBContract.COLUMN_EVENT_TIME + " desc;";
-
-            Log.e("EVENT_DATA ARCHIVED", query);
             selectionArg = new String[]{String.valueOf(startDate), String.valueOf(endDate)};
         }else {
             query = " SELECT * FROM " +
@@ -213,7 +218,6 @@ public class EventDataSourceHandler {
                     " ORDER BY tde." + EventDBContract.COLUMN_EVENT_ID + " asc, tde." + EventDBContract.COLUMN_EVENT_TIME + " desc;";
             selectionArg = new String[]{String.valueOf(startDate), String.valueOf(endDate), String.valueOf(eventCategory)};
         }
-        Log.e("EVENT_DATA ARCHIVED", query);
 
         Cursor cursor = database.rawQuery(query, selectionArg);
 
@@ -267,14 +271,10 @@ public class EventDataSourceHandler {
 
     public void deleteDailyEvent(Event event) {
 
-        Log.e("DailyEventDelete", String.valueOf(event.getRecordID()));
-
         int i = database.delete(EventDBContract.TABLE_DAILY_EVENTS,
                 EventDBContract.TDE_COLUMN_ID + " = ?",
                 new String[]{String.valueOf(event.getRecordID())
                 });
-
-        Log.e("DeletedCount", String.valueOf(i));
     }
 
     public void updateDailyEvent(Event event) {
@@ -301,13 +301,10 @@ public class EventDataSourceHandler {
                 + " WHERE " + EventDBContract.COLUMN_EVENT_ID + " = ?";
         String[] selectionArg = new String[]{String.valueOf(id)};
 
-        Log.e("Quick History query", query + "event ID: " + id);
-
         Cursor cursor = database.rawQuery(query, selectionArg);
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Log.e("Quick History cursor:",cursor.getString(0));
                 history.add(TimeUtil.getFormattedDateQuickHistory(cursor.getString
                         (cursor.getColumnIndex(EventDBContract.COLUMN_EVENT_TIME))));
                 cursor.moveToNext();
@@ -372,8 +369,6 @@ public class EventDataSourceHandler {
         if(isSDCardWritable()) {
             FileInputStream fin = new FileInputStream(new File(DB_FILEPATH));
             FileOutputStream fOut = new FileOutputStream(new File(DB_BACKUPPATH));
-            Log.e("Backup log", "Backup path = " + DB_BACKUPPATH + " DB path = " + DB_FILEPATH);
-
             copyFile(fin,fOut);
         }
     }
@@ -392,7 +387,6 @@ public class EventDataSourceHandler {
     }
 
     private boolean isSDCardWritable() {
-        Log.e("Backup log", "Backup path = " + DB_BACKUPPATH + " DB path = " + DB_FILEPATH);
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ? true : false;
       //  return Environment.getExternalStorageDirectory().canWrite();
     }

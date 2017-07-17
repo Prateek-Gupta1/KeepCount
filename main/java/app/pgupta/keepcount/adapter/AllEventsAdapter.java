@@ -33,12 +33,13 @@ import java.util.LinkedList;
 
 import app.pgupta.keepcount.R;
 import app.pgupta.keepcount.datasource.EventDataSourceHandler;
-import app.pgupta.keepcount.dialogbox.DailyEventDialog;
+import app.pgupta.keepcount.dialogbox.MarkEventDialog;
 import app.pgupta.keepcount.model.Event;
 import app.pgupta.keepcount.model.EventMaster;
 import app.pgupta.keepcount.model.Reminder;
 import app.pgupta.keepcount.receiver.ReminderReceiver;
 import app.pgupta.keepcount.util.Constants;
+import app.pgupta.keepcount.util.ThemeUtil;
 import app.pgupta.keepcount.util.TimeUtil;
 
 /**
@@ -46,20 +47,20 @@ import app.pgupta.keepcount.util.TimeUtil;
  */
 public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    LinkedList<Object> masterEventsData;
-    Context context;
-    HashMap<Integer, Reminder> reminders;
+    private LinkedList<Object> masterEventsData;
+    private Context context;
+    private HashMap<Integer, Reminder> reminders;
     private final int HEADER = 1;
     private final int EVENT = 2;
     private Fragment fragment;
-    AlarmManager alarmManager;
-    int notificationEventID = -1;
+    private AlarmManager alarmManager;
+    private int notificationEventID = -1;
 
     public interface EventMarkedListener {
         void onEventMarked(Event event);
     }
 
-    EventMarkedListener mMarkedListener;
+    private EventMarkedListener mMarkedListener;
 
     public AllEventsAdapter(LinkedList<Object> data, Context context, Fragment fragment, EventMarkedListener listener, int notificationEventID) {
         this.masterEventsData = data;
@@ -72,7 +73,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private HashMap<Integer, Reminder> initReminders() {
-        EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+        EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
         dsHandler.openConnection();
         HashMap<Integer, Reminder> reminders = dsHandler.getAllReminders();
         dsHandler.closeConnection();
@@ -116,7 +117,6 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             viewHolder.llVerticalBorder.setBackgroundResource(eventMaster.getEventCategory().background);
             viewHolder.vDivider.setBackgroundResource(eventMaster.getEventCategory().color);
             viewHolder.ivIcon.setImageResource(eventMaster.getEventCategory().icon);
-            //Log.e("AllEventsAdapter", String.valueOf(eventMaster.getEventCategory().color ));
             viewHolder.tvCreatedOn.setText("Created On : " + TimeUtil.getFormattedDate(eventMaster.getCreatedOn()));
             viewHolder.tvTitle.setText(eventMaster.getTitle());
             if (reminders != null && reminders.containsKey(eventMaster.getId())) {
@@ -138,10 +138,8 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                     if (viewHolder.isReminderSet) {
                         popupMenu.getMenuInflater().inflate(R.menu.menu_overflow_events_reminder, popupMenu.getMenu());
-//                        popupMenu.getMenu().findItem(R.id.action_set_reminder).setTitle("Update Reminder");
                     } else {
                         popupMenu.getMenuInflater().inflate(R.menu.menu_overflow_events, popupMenu.getMenu());
-                        //   popupMenu.getMenu().findItem(R.id.action_delete_reminder).setVisible(false);
                     }
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
@@ -163,9 +161,6 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     popupMenu.dismiss();
                                     viewHolder.actionDeleteReminder(pos);
                                     break;
-                                /*case R.id.action_update_reminder:
-                                    popupMenu.dismiss();
-                                    viewHolder.actionUpdateReminder(pos);*/
                                 default:
                                     break;
                             }
@@ -192,18 +187,16 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-
         if (masterEventsData.get(position) instanceof String) {
             return HEADER;
         } else {
             return EVENT;
         }
-        //return super.getItemViewType(position);
     }
 
     private void deleteItem(int position, MasterEventViewHolder holder) {
 
-        EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+        EventDataSourceHandler dsHandler =  EventDataSourceHandler.getInstance(context);
         dsHandler.openConnection();
         dsHandler.deleteMasterEvent((EventMaster) masterEventsData.get(position));
         if (holder.isReminderSet) {
@@ -229,17 +222,12 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        //public  LinearLayout llIconBG;
-        // public ImageView ivIcon;
         public TextView tvHeader;
         public View vllBottomBorder;
 
         public HeaderViewHolder(View view) {
             super(view);
-            //  llIconBG = (LinearLayout)view.findViewById(R.id.llEventHeaderIconBackground);
-            //  ivIcon = (ImageView) view.findViewById(R.id.ivHeaderIcon);
             tvHeader = (TextView) view.findViewById(R.id.tvHeader);
-            //vllBottomBorder = view.findViewById(R.id.vheaderBottomBorder);
         }
     }
 
@@ -248,7 +236,6 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TextView tvTitle;
         public TextView tvCreatedOn;
         public ImageView ivDelete;
-        //  public ImageView ivAddEvent;
         public LinearLayout llVerticalBorder;
         public ImageView ivIcon;
         public ImageView ivReminderIcon;
@@ -265,11 +252,9 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             tvTitle = (TextView) view.findViewById(R.id.tvEventTitle);
             tvCreatedOn = (TextView) view.findViewById(R.id.tvCreatedOn);
-            //   ivAddEvent = (ImageView) view.findViewById(R.id.ivAddEvent);
             ivDelete = (ImageView) view.findViewById(R.id.ivDeleteEvent);
             llVerticalBorder = (LinearLayout) view.findViewById(R.id.llVerticalBorder);
             ivIcon = (ImageView) view.findViewById(R.id.ivEventItemIcon);
-            //21/11/2016
             ivReminderIcon = (ImageView) view.findViewById(R.id.ivReminderIcon);
             ivReminderIcon.setVisibility(View.GONE);
             llReminder = (LinearLayout) view.findViewById(R.id.llReminder);
@@ -281,7 +266,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DailyEventDialog dialog = new DailyEventDialog();
+                    MarkEventDialog dialog = new MarkEventDialog();
                     dialog.master = (EventMaster) masterEventsData.get(position);
                     dialog.listener = mMarkedListener;
                     dialog.show(fragment.getFragmentManager(), "mark event");
@@ -314,7 +299,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void actionQuickHistory(int position) {
 
-            EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+            EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
             dsHandler.openConnection();
             ArrayList<String> history = dsHandler.getQuickHistoryOfEvent(((EventMaster) masterEventsData.get(position)).getId());
             dsHandler.closeConnection();
@@ -349,7 +334,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             alarmManager.cancel(alarmIntent);
 
             //delete reminder from sqlite db
-            EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+            EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
             dsHandler.openConnection();
             dsHandler.deleteReminder(master.getId());
             dsHandler.closeConnection();
@@ -370,6 +355,8 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             TextView tvTitle = (TextView) v.findViewById(R.id.tvAlarmTitle);
             final EditText etDate = (EditText) v.findViewById(R.id.etAlarmDate);
             final EditText etTime = (EditText) v.findViewById(R.id.etAlarmTime);
+            LinearLayout llHeader = (LinearLayout)v.findViewById(R.id.llReminderDialogHeader);
+            llHeader.setBackgroundResource(ThemeUtil.theme_background_resource);
 
             //etDate.setShowSoftInputOnFocus(false);
 
@@ -439,7 +426,7 @@ public class AllEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     reminder.setEventID(((EventMaster) masterEventsData.get(position)).getId());
                     reminder.setUuid(Constants.getUuid());
 
-                    EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+                    EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
                     dsHandler.openConnection();
                     dsHandler.addReminder(reminder);
                     dsHandler.closeConnection();

@@ -4,18 +4,24 @@
     tools:context="keepcount.gmail.coolsunnyster.com.keepcount.bean.activity.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_backup"
-        android:title="Backup"
+        android:title="Backup Data"
         app:showAsAction="never"
+        android:orderInCategory="3"
         />
     <item android:id="@+id/action_restore"
         android:title="Restore Data"
+        android:orderInCategory="4"
         app:showAsAction="never"/>
     <item android:id="@+id/action_tutorial"
-        android:title="Tutorials"
+        android:title="Tutorial"
+        android:orderInCategory="2"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_about"
+        android:orderInCategory="5"
+        android:title="About Us"/>
 </menu>

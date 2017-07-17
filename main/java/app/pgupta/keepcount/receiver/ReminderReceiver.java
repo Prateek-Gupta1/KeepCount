@@ -20,8 +20,7 @@ public class ReminderReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 
         if(pref.getBoolean(ThemePreferenceActivity.PREF_NOTIFICATION_TONE, true)) {

@@ -43,7 +43,8 @@
             android:name=".service.ReminderService"
             android:exported="false" />
 
-        <activity android:name=".activity.TutorialActivity"></activity>
+        <activity android:name=".activity.TutorialActivity" />
+        <activity android:name=".activity.AboutPageActivity"></activity>
     </application>
 
 </manifest>

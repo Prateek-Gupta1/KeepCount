@@ -39,19 +39,4 @@ public class ThemePreferenceActivity extends PreferenceActivity {
         }
     }
 
-//    public static class ThemePreferenceFragment extends PreferenceFragment
-//    {
-//        @Override
-//        public void onCreate(final Bundle savedInstanceState)
-//        {
-//            super.onCreate(savedInstanceState);
-//
-//            findPreference("theme").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-//                @Override
-//                public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                    return false;
-//                }
-//            });
-//        }
-//    }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +22,12 @@ import app.pgupta.keepcount.adapter.AllEventsAdapter;
 import app.pgupta.keepcount.datasource.EventDataSourceHandler;
 import app.pgupta.keepcount.model.Event;
 import app.pgupta.keepcount.model.EventMaster;
+import app.pgupta.keepcount.util.ThemeUtil;
 
 /**
  * Created by admin on 5/8/2016.
  */
-public class DailyEventDialog extends DialogFragment {
+public class MarkEventDialog extends DialogFragment {
 
     public EventMaster master;
     public AllEventsAdapter.EventMarkedListener listener;
@@ -44,6 +46,8 @@ public class DailyEventDialog extends DialogFragment {
         tvUnit.setText(master.getUnit());
         TextView tvTitle = (TextView)v.findViewById(R.id.tvEventTitle);
         tvTitle.setText(master.getTitle());
+        LinearLayout llHeader = (LinearLayout)v.findViewById(R.id.llMarkDialogHeader);
+        llHeader.setBackgroundResource(ThemeUtil.theme_background_resource);
 
         final NumberPicker day = (NumberPicker)v.findViewById(R.id.npDay);
         day.setMinValue(1);
@@ -107,7 +111,7 @@ public class DailyEventDialog extends DialogFragment {
 
     private void markEventToday(Event event){
 
-        EventDataSourceHandler handler = new EventDataSourceHandler(getContext());
+        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(getContext());
         handler.openConnection();
         long id = handler.createDailyEvent(event);
         handler.closeConnection();

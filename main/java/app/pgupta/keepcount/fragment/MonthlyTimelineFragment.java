@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +55,7 @@ public class MonthlyTimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_todays_event, container, false);
+        View v = inflater.inflate(R.layout.fragment_this_months_event, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerViewThisMonth);
         //eventData = loadData(v.getContext());
         mEventData = loadData();
@@ -94,7 +92,7 @@ public class MonthlyTimelineFragment extends Fragment {
 
     private LinkedList<Object> loadData(){
         LinkedList<Object> data = new LinkedList<Object>();
-        EventDataSourceHandler handler = new EventDataSourceHandler(getContext());
+        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(getContext());
         handler.openConnection();
         Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.DAY_OF_MONTH, 1);

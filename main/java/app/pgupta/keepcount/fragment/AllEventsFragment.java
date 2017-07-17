@@ -102,7 +102,6 @@ public class AllEventsFragment extends Fragment implements NewMasterEventDialog.
                 if(((EventMaster)obj).getId() == notificationEventID){
                     mRecyclerView.scrollToPosition(posit-1);
                     notificationEventID = -1;
-                    Log.e("position of the event", posit+"");
                 }
             }
         }
@@ -114,7 +113,7 @@ public class AllEventsFragment extends Fragment implements NewMasterEventDialog.
 
         mData = new LinkedList<>();
 
-        EventDataSourceHandler dsHandler = new EventDataSourceHandler(context);
+        EventDataSourceHandler dsHandler = EventDataSourceHandler.getInstance(context);
         dsHandler.openConnection();
         ArrayList<EventMaster> masterEvents = (ArrayList<EventMaster>) dsHandler.listAllMasterEvents();
         dsHandler.closeConnection();
@@ -166,7 +165,7 @@ public class AllEventsFragment extends Fragment implements NewMasterEventDialog.
                 event.setGain_or_loss(Event.ValueGainLoss.LOSS);
         }
         //event.setUnit((unit != null && !"".equals(unit)) ? unit:"None");
-        EventDataSourceHandler handler = new EventDataSourceHandler(getContext());
+        EventDataSourceHandler handler = EventDataSourceHandler.getInstance(getContext());
         handler.openConnection();
         int position = putEventInList(handler.createMasterEvent(event));
         handler.closeConnection();

@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import app.pgupta.keepcount.R;
 import app.pgupta.keepcount.util.Constants;
+import app.pgupta.keepcount.util.ThemeUtil;
 
 /**
  * Created by admin on 5/7/2016.
@@ -29,19 +31,6 @@ public class NewMasterEventDialog extends DialogFragment {
 
     public NewMasterEventDialogListener mListener;
 
-   /* @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (NewMasterEventDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement NewMasterEventDialogListener");
-        }
-    }*/
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,7 +43,8 @@ public class NewMasterEventDialog extends DialogFragment {
 
         final EditText etTitle = (EditText) v.findViewById(R.id.etEventTitle);
         Spinner spEventCat = (Spinner) v.findViewById(R.id.spEventCategory);
-        EditText etUnit = (EditText) v.findViewById(R.id.etUnit);
+        LinearLayout llHeader = (LinearLayout)v.findViewById(R.id.llCreateNewDialogHeader);
+        llHeader.setBackgroundResource(ThemeUtil.theme_background_resource);
         String[] eventCategories = getEventCategories();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,eventCategories);
         spEventCat.setAdapter(adapter);
