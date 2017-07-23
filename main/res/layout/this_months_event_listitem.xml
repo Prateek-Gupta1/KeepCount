@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="0.7"
+            android:layout_weight="0.90"
             android:text="Small Text"
             android:textColor="@color/misc"
             android:textSize="11sp"
@@ -99,16 +99,16 @@
             android:id="@+id/ivRemoveEvent"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_gravity="fill_vertical"
-            android:layout_weight="0.15"
+            android:layout_gravity="end|right"
+            android:layout_weight="0.05"
             android:src="@drawable/ic_delete_black_24dp" />
 
         <ImageView
             android:id="@+id/ivEditEvent"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_gravity="fill_vertical"
-            android:layout_weight="0.15"
+            android:layout_gravity="end|right"
+            android:layout_weight="0.05"
             android:src="@drawable/ic_create_black_24dp" />
 
     </LinearLayout>

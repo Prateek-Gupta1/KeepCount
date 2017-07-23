@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="25dp"
-            android:text="Keep a note and an account of activities you do or events that happens to you"
+            android:text="Keep a note and an account of activities you do or events that happen to you"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Keep Count is the easiest way to keep a Note and Account of Events and Activities
-that matters to you. The app is single screen, and easy and intuitive to use. Save custom events, mark
+that matters to you. The app is single screen, easy and intuitive to use. Save custom events, mark
 them with just a tap and get a count at the end of the month. The data is private and local to your device only.\n
 \nThe app comes preloaded with events to give you a head start.\n
 \nFeatures Include:\n

@@ -25,10 +25,10 @@
     <string name="event_reminder">Set Reminder</string>
     <string name="event_reminder_update">Update Reminder</string>
     <string name="delete_reminder">Delete Reminder</string>
-    <string name="dialog_add_title">Mark On Timeline</string>
+    <string name="dialog_add_title">Mark on Timeline</string>
     <string name="dialog_tvunits">Units</string>
     <string name="dialog_tvdom">Day of the Month</string>
-    <string name="archives_empty_list_text">No archives found for this month.</string>
+    <string name="archives_empty_list_text">No archives found.</string>
     <string name="dialog_new_event_note">Would you Gain or Lose the above mentioned units every time you mark this event?</string>
 
 

@@ -73,8 +73,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:padding="0dp"
-        android:text="Unit is required to quantify the event. For example, an event such as 'Took stairs' could have helped you burn some CALORIES. Here 'CALORIES' is the unit for the event"
-        android:textSize="12sp" />
+        android:text="Unit is required to quantify the event. For example, an activity such as 'Took stairs' could have helped you burn some CALORIES. Here 'CALORIES' is the unit for the event"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="left"
+        android:textSize="12sp"
+        android:text="@string/dialog_new_event_note"
+        android:textColor="#70000000" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -83,9 +93,8 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <RadioButton
             android:id="@+id/rbNone"
@@ -112,13 +121,5 @@
 
     </RadioGroup>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="left"
-        android:text="@string/dialog_new_event_note"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#70000000" />
 
 </LinearLayout>

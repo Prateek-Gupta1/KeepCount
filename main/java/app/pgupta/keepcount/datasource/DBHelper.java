@@ -66,18 +66,18 @@ public class DBHelper extends SQLiteOpenHelper implements EventDBContract{
         String curr = currency.getCurrencyCode();
 
         LinkedHashMap<Integer,String[]> initialEvents = new LinkedHashMap<Integer,String[]>();
-        initialEvents.put(Constants.EventCategories.HEALTH.value, new String[]{"Visited doctor",
-                "Went for a walk", "Went to Gym"});
+        initialEvents.put(Constants.EventCategories.HEALTH.value, new String[]{"Visit Doctor",
+                "Walk outdoors", "Workout in Gym", "Took daily pills"});
         initialEvents.put(Constants.EventCategories.WORK.value, new String[]{"Attended a meeting",
-                "Hosted an event", "Took leave from work"});
+                "Hosted an event", "Took leave from work", "Finished report"});
         initialEvents.put(Constants.EventCategories.PERSONAL.value, new String[]{"Completed a Book",
-                "Had dinner with friends","Borrowed money"});
-        initialEvents.put(Constants.EventCategories.HOME.value, new String[]{"Brought Grocery",
-                "Paid a bill","Maid didn't come"});
-        initialEvents.put(Constants.EventCategories.MISCELLANEOUS.value,new String[]{"Got bike serviced","Mowed lawn"});
+                "Dinner at a Restaurant","Borrowed money", "Lent money", "Family outing"});
+        initialEvents.put(Constants.EventCategories.HOME.value, new String[]{"Bought Grocery",
+                "Paid a bill","Called Cleaning Services","Newspaper not delivered"});
+        initialEvents.put(Constants.EventCategories.MISCELLANEOUS.value,new String[]{"Serviced Bike","Mowed lawn", "Painted house"});
 
-        String[] units = {curr,"Calorie","Calorie","Minutes","Minutes","Day","Day",curr,curr,curr,curr,curr,"Minutes","Minutes"};
-        int[] gain_loss = {1,1,1,2,2,0,2,1,0,1,1,0,1,2};//added 11 sep 2016
+        String[] units = {curr,"Calorie","Calorie","Dozes","Minutes","Minutes","Day","Hours","Day",curr,curr,curr,curr,curr,curr,curr,curr,curr,"Minutes","Minutes"};
+        int[] gain_loss = {1,1,1,2,1,2,0,1,2,1,0,1,1,1,1,1,0,1,2,1};//added 11 sep 2016
         int i=0;
         for(int key : initialEvents.keySet()){
             String[] titles = initialEvents.get(key);
