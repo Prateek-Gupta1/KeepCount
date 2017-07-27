@@ -21,7 +21,10 @@
         android:title="Tutorial"
         android:orderInCategory="2"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_about"
+    <item android:id="@+id/action_rate"
         android:orderInCategory="5"
+        android:title="Rate and Review app"/>
+    <item android:id="@+id/action_about"
+        android:orderInCategory="6"
         android:title="About Us"/>
 </menu>
